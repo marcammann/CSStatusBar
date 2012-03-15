@@ -6,7 +6,7 @@ In Build Phases for your current project, add a new "Run Script" build phase. Mo
 
 Add a base tag in your repo.
 e.g. 
-	> git tag -a 0.0.1a1
+> git tag -a 0.0.1a1
 
 ## Usage
 In your appDelegate (or wherever you like):
