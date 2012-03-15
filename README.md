@@ -10,6 +10,7 @@ e.g.
 
 ## Usage
 In your appDelegate (or wherever you like):
+
 	self.statusBarWindow = [[CSStatusBarWindow alloc] initWithFrame:application.statusBarFrame];
 	[self.statusBarWindow makeKeyAndVisible];
 
