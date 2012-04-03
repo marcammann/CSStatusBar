@@ -12,7 +12,7 @@ Pod::Spec.new do |s|
   s.homepage = 'http://github.com/marcammann/CSStatusBar'
   s.author   = { 'Marc Ammann' => 'marc@codesofa.com' }
 
-  s.source   = { :git => 'git://github.com/marcammann/CSStatusBar.git', :tag => '0.1.0' }
+  s.source   = { :git => 'git://github.com/marcammann/CSStatusBar.git', :tag => '0.1.1' }
 
   s.description = 'CSStatusBar helps with showing the revision number in the status bar, next to other git references. Or any message you want. Swipe left and right to go to the next one.'
 
