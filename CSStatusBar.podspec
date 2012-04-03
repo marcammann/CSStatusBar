@@ -6,7 +6,7 @@
 #
 Pod::Spec.new do |s|
   s.name     = 'CSStatusBar'
-  s.version  = '0.1.0'
+  s.version  = '0.1.1'
   s.license  = 'MIT'
   s.summary  = 'CSStatusBar helps with showing the revision number in the status bar, next to other git references. Or any message you want. Swipe left and right to go to the next one.'
   s.homepage = 'http://github.com/marcammann/CSStatusBar'
