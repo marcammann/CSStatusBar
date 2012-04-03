@@ -123,10 +123,8 @@ CSBundleKey * const kCSBundleGitRef = @"CSBundleGitRef";
 
 - (void)handleSwipe:(UISwipeGestureRecognizer *)recognizer {	
 	if ([recognizer direction] == UISwipeGestureRecognizerDirectionLeft) {
-		LOG_G(@"Swiped Left");
 		[self showNextInformation:YES];
 	} else if ([recognizer direction] == UISwipeGestureRecognizerDirectionRight) {
-		LOG_G(@"Swiped Right");
 		[self showPreviousInformation:YES];
 	}
 }
@@ -137,14 +135,12 @@ CSBundleKey * const kCSBundleGitRef = @"CSBundleGitRef";
 	if (nextIndex <= 0) {
 		nextIndex = [self.informationStrings count] - 1;
 	}
-	LOG_G(@"Next Index: %i", nextIndex);
 	[self showInformationAtIndex:nextIndex animated:animated direction:UISwipeGestureRecognizerDirectionRight];	
 }
 
 
 - (void)showNextInformation:(BOOL)animated {
 	NSInteger nextIndex = (informationIndex + 1) % [self.informationStrings count];
-	LOG_G(@"Next Index: %i", nextIndex);
 	[self showInformationAtIndex:nextIndex animated:animated direction:UISwipeGestureRecognizerDirectionLeft];
 }
 
