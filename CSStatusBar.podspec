@@ -19,6 +19,7 @@ Pod::Spec.new do |s|
   s.platform = :ios
 
   s.source_files = '**.{h,m}'
+  s.resources = '*/Tools/*'
 
   s.framework = 'UIKit'
 
