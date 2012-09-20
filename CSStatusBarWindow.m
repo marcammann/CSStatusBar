@@ -43,6 +43,13 @@ CSBundleKey * const kCSBundleGitRef = @"CSBundleGitRef";
 		informationIndex = 0;
 		
 		CGRect statusBarFrame = [[UIApplication sharedApplication] statusBarFrame];
+		
+		[[UIApplication sharedApplication] addObserver:self forKeyPath:@"statusBarFrame" options:0 context:NULL];
+		[[UIApplication sharedApplication] addObserver:self forKeyPath:@"statusBarOrientation" options:0 context:NULL];
+		
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(layoutStatusBar) name:UIApplicationDidChangeStatusBarFrameNotification object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(layoutStatusBar) name:UIApplicationDidChangeStatusBarOrientationNotification object:nil];
+		
 		informationBar = [[UIView alloc] initWithFrame:statusBarFrame];
 		
 		[informationBar setBackgroundColor:[UIColor blackColor]];
@@ -61,6 +68,49 @@ CSBundleKey * const kCSBundleGitRef = @"CSBundleGitRef";
 	}
 	
 	return self;
+}
+
+
+- (void)dealloc {
+	[[UIApplication sharedApplication] removeObserver:self forKeyPath:@"statusBarFrame"];
+	[[UIApplication sharedApplication] removeObserver:self forKeyPath:@"statusBarOrientation"];
+	[[NSNotificationCenter defaultCenter] removeObserver:self forKeyPath:UIApplicationDidChangeStatusBarFrameNotification];
+	[[NSNotificationCenter defaultCenter] removeObserver:self forKeyPath:UIApplicationDidChangeStatusBarOrientationNotification];
+}
+
+
+#define DegToRad(degrees) (degrees * M_PI / 180)
+
+- (CGAffineTransform)transformForOrientation:(UIInterfaceOrientation)orientation {
+	switch (orientation) {
+		case UIInterfaceOrientationLandscapeLeft:
+			return CGAffineTransformMakeRotation(-DegToRad(90));
+			
+		case UIInterfaceOrientationLandscapeRight:
+			return CGAffineTransformMakeRotation(DegToRad(90));
+			
+		case UIInterfaceOrientationPortraitUpsideDown:
+			return CGAffineTransformMakeRotation(DegToRad(180));
+			
+		case UIInterfaceOrientationPortrait:
+		default:
+			return CGAffineTransformMakeRotation(DegToRad(0));
+	}
+}
+
+		 
+- (void)layoutStatusBar {
+	UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
+	
+	CGFloat width = CGRectGetWidth([UIScreen mainScreen].bounds);
+	
+	[self setFrame:CGRectMake(0, 0, width, 20.0f)];
+	[informationBar setFrame:CGRectMake(0, 0, CGRectGetWidth(self.bounds), 20.0f)];
+}
+
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+	[self layoutStatusBar];
 }
 
 
@@ -97,7 +147,7 @@ CSBundleKey * const kCSBundleGitRef = @"CSBundleGitRef";
 
 
 - (void)setInformationBarHidden:(BOOL)hidden animated:(BOOL)animated {
-	void (^changeInformationBarVisibility)(UIView *, CGFloat) = ^(UIView *bar, CGFloat visibility){
+	void (^changeInformationBarVisibility)(UIView *, CGFloat) = ^(UIView *bar, CGFloat visibility) {
 		[bar setAlpha:visibility];
 	};
 	
@@ -146,7 +196,7 @@ CSBundleKey * const kCSBundleGitRef = @"CSBundleGitRef";
 
 
 - (void)showInformationAtIndex:(NSInteger)index animated:(BOOL)animated direction:(UISwipeGestureRecognizerDirection)direction {
-	CGRect statusBarFrame = [UIApplication sharedApplication].statusBarFrame;
+	CGRect statusBarFrame = informationBar.bounds;
 	
 	// The values where the current label is coming from.
 	CGFloat previousOldAlpha = informationBar.alpha;

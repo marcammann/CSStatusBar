@@ -201,7 +201,7 @@ class PlistWriter(DumbXMLWriter):
         DumbXMLWriter.__init__(self, file, indentLevel, indent)
 
     def writeValue(self, value):
-        if isinstance(value, str):
+        if isinstance(value, str) or isinstance(value, unicode):
             self.simpleElement("string", value)
         elif isinstance(value, bool):
             # must switch for bool before int, as bool is a
@@ -237,20 +237,26 @@ class PlistWriter(DumbXMLWriter):
         self.endElement("data")
 
     def writeDict(self, d):
-        self.beginElement("dict")
-        items = sorted(d.items())
-        for key, value in items:
-            if not isinstance(key, str):
-                raise TypeError("keys must be strings")
-            self.simpleElement("key", key)
-            self.writeValue(value)
-        self.endElement("dict")
+        if d:
+            self.beginElement("dict")
+            items = sorted(d.items())
+            for key, value in items:
+                #if not isinstance(key, str):
+                #    raise TypeError("keys must be strings")
+                self.simpleElement("key", key)
+                self.writeValue(value)
+            self.endElement("dict")
+        else:
+            self.simpleElement("dict")
 
     def writeArray(self, array):
-        self.beginElement("array")
-        for value in array:
-            self.writeValue(value)
-        self.endElement("array")
+        if array:
+            self.beginElement("array")
+            for value in array:
+                self.writeValue(value)
+            self.endElement("array")
+        else:
+            self.simpleElement("array")
 
 
 class _InternalDict(dict):
