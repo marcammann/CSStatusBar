@@ -72,10 +72,6 @@ CSBundleKey * const kCSBundleGitRef = @"CSBundleGitRef";
 
 
 - (void)dealloc {
-	[[UIApplication sharedApplication] removeObserver:self forKeyPath:@"statusBarFrame"];
-	[[UIApplication sharedApplication] removeObserver:self forKeyPath:@"statusBarOrientation"];
-	[[NSNotificationCenter defaultCenter] removeObserver:self forKeyPath:UIApplicationDidChangeStatusBarFrameNotification];
-	[[NSNotificationCenter defaultCenter] removeObserver:self forKeyPath:UIApplicationDidChangeStatusBarOrientationNotification];
 }
 
 
